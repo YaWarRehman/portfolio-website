@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Portfolio</title>
+    <meta name="description" content="Personal portfolio built with React and TailwindCSS (CDN)." />
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind config for fonts and colors (optional)
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+              body: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+    <!-- React + ReactDOM + Babel (so we can write JSX in one file) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="icon" href="./assets/avatar.svg"/>
+    <style>
+      html, body { scroll-behavior: smooth; }
+ 
+    </style>
+  </head>
+  <body class="bg-white text-gray-900 antialiased">
+    <!-- NAV -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+          <a href="#home" class="flex items-center gap-2 group">
+            <img src="./assets/avatar.svg" alt="Logo" class="h-8 w-8"/>
+            <span class="font-semibold tracking-tight group-hover:opacity-80">Yawer Rehman</span>
+          </a>
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="#about" class="hover:text-blue-600">About</a>
+            <a href="#skills" class="hover:text-blue-600">Skills</a>
+            <a href="#projects" class="hover:text-blue-600">Projects</a>
+            <a href="#experience" class="hover:text-blue-600">Experience</a>
+            <a href="#contact" class="hover:text-blue-600">Contact</a>
+            <a href="./assets/Resume.pdf" class="px-3 py-2 rounded-xl border hover:bg-gray-50">Resume</a>
+          </nav>
+          <button id="menuBtn" class="md:hidden inline-flex items-center justify-center p-2 rounded-xl border">
+            <span id="menuLabel">Menu</span>
+          </button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden pb-4">
+          <div class="flex flex-col gap-3 text-sm">
+            <a href="#about" class="hover:text-blue-600">About</a>
+            <a href="#skills" class="hover:text-blue-600">Skills</a>
+            <a href="#projects" class="hover:text-blue-600">Projects</a>
+            <a href="#experience" class="hover:text-blue-600">Experience</a>
+            <a href="#contact" class="hover:text-blue-600">Contact</a>
+            <a href="./assets/Resume.pdf" class="px-3 py-2 rounded-xl border hover:bg-gray-50 w-max">Resume</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- APP ROOT -->
+    <main id="root"></main>
+
+    <!-- FOOTER -->
+    <footer class="mt-16 border-t border-gray-100">
+      <div class="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-2">
+        <p>© <span id="year"></span> Yawer Rehman. All rights reserved.</p>
+        <p>Built with React + Tailwind (CDN).</p>
+      </div>
+    </footer>
+
+    <!-- React App -->
+    <script type="text/babel">
+      const { useState } = React;
+
+      const Badge = ({ children }) => (
+        <span className="inline-flex items-center px-3 py-1 rounded-full border text-xs">{children}</span>
+      );
+
+      const Section = ({ id, title, children }) => (
+        <section id={id} className="max-w-6xl mx-auto px-4 py-16">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-6">{title}</h2>
+          {children}
+        </section>
+      );
+
+      const ProjectCard = ({ title, description, tags, link, repo, image }) => (
+        <div className="rounded-2xl border bg-white hover:shadow-md transition overflow-hidden">
+          <img src={image} alt={title} className="w-full h-44 object-cover"/>
+          <div className="p-5 space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <div className="flex gap-2 text-sm">
+                {link && <a href={link} target="_blank" className="underline hover:text-blue-600">Live</a>}
+                {repo && <a href={repo} target="_blank" className="underline hover:text-blue-600">Code</a>}
+              </div>
+            </div>
+            <p className="text-sm text-gray-600">{description}</p>
+            <div className="flex flex-wrap gap-2">
+              {tags.map((t, i) => <Badge key={i}>{t}</Badge>)}
+            </div>
+          </div>
+        </div>
+      );
+
+      const App = () => {
+        const [emailCopied, setEmailCopied] = useState(false);
+        const projects = [
+          {
+            title: "Ecommerce website ",
+            description: "using mern stack ",
+            tags: ["React,nodejs Express mongodb"],
+            link: "#",
+            repo: "#",
+            image: "./assets/project-ml.svg",
+          },
+        
+        {
+            title: "Hate Speech Detection (Roman Urdu)",
+            description: "ML app (TF-IDF + Naive Bayes/SVM/RandomForest) to classify Roman Urdu comments as hate or non-hate.",
+            tags: ["Python", "Flask", "TF-IDF", "SVM", "Naive Bayes"],
+            link: "#",
+            repo: "#",
+            image: "./assets/project-ml.svg",
+          },
+          
+          {
+            title: "Portfolio Template",
+            description: "This portfolio itself – clean, single-file React (CDN) + Tailwind.",
+            tags: ["React", "Tailwind"],
+            link: "#home",
+            repo: "#",
+            image: "./assets/project-portfolio.svg",
+          },
+        ];
+
+        const copyEmail = async () => {
+          try {
+            await navigator.clipboard.writeText("you@example.com");
+            setEmailCopied(true);
+            setTimeout(() => setEmailCopied(false), 1500);
+          } catch (e) {}
+        };
+
+        return (
+          <div id="home">
+            {/* HERO */}
+            <section className="max-w-6xl mx-auto px-4 pt-16 pb-10">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-6">
+                  <div className="inline-flex items-center gap-2 border rounded-full px-3 py-1 text-xs">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block"></span>
+                    Open to Opportunities
+                  </div>
+                  <h1 className="text-3xl md:text-5xl font-bold leading-tight">
+                    Hi, I'm <span className="text-blue-600">Yawer Rehman </span> —
+                    <br className="hidden md:block"/> a Software Engineering student.
+                  </h1>
+                  <p className="text-gray-600 max-w-xl">
+                    I build practical machine learning projects and clean web apps. Currently
+                    focused on hate speech detection for Roman Urdu using traditional ML.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <a href="#projects" className="px-4 py-2 rounded-xl bg-blue-600 text-white">View Projects</a>
+                    <a href="#contact" className="px-4 py-2 rounded-xl border">Contact Me 03122832587</a>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm">
+                    <button onClick={copyEmail} className="underline">yawerrehman9@gmail.com</button>
+                    <span className={emailCopied ? "opacity-100 transition" : "opacity-0 transition"}>Copied!</span>
+                  </div>
+                </div>
+                <div className="flex justify-center md:justify-end">
+                  <img src="./assets/avatar.svg" alt="Avatar" className="w-56 h-56"/>
+                </div>
+              </div>
+            </section>
+
+            {/* ABOUT */}
+            <Section id="about" title="About">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 space-y-4">
+                  <p>
+                   I'm a BSSE student at Virtual University of Pakistan. I enjoy turning data into decisions and ideas into usable apps. 
+                   My toolkit includes Python, scikit-learn, Flask, React, WordPress, MERN stack, and C#."
+                  </p>
+                  <p>
+                    In my latest project, I trained ML models (Naive Bayes, SVM, Random Forest) on Roman Urdu text.
+                    I love clean code, simple UX, and reproducible experiments.
+                  </p>
+                </div>
+                <div className="rounded-2xl border p-4">
+                  <h3 className="font-semibold mb-2">Quick Info</h3>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>📍 Pakistan</li>
+                    <li>🎓 BSSE (Virtual University)</li>
+    
+                   <li>✉️ yawerrehman9@gmail.com</li>
+                  </ul>
+                </div>
+              </div>
+            </Section>
+
+            {/* SKILLS */}
+            <Section id="skills" title="Skills">
+              <div className="flex flex-wrap gap-2">
+                {[
+  "Python",
+  "scikit-learn",
+  "Pandas",
+  "NumPy",
+  "Flask",
+  "React",
+  "Tailwind",
+  "Git",
+  "UML",
+  "SQL",
+  "MongoDB",
+  "Express.js",
+  "React.js",
+  "Node.js",
+  "WordPress"
+].map((s,i)=>(
+                  <Badge key={i}>{s}</Badge>
+                ))}
+              </div>
+            </Section>
+
+            {/* PROJECTS */}
+            <Section id="projects" title="Projects">
+              <div className="grid md:grid-cols-3 gap-6">
+                {projects.map((p, i) => <ProjectCard key={i} {...p} />)}
+              </div>
+            </Section>
+
+            {/* EXPERIENCE */}
+            <Section id="experience" title="Experience">
+              <div className="rounded-2xl border p-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                  <div>
+                    <h3 className="font-semibold">Student Projects & Freelance</h3>
+                    <p className="text-sm text-gray-600">2024 — Present</p>
+                  </div>
+                  <div className="text-sm">
+                    Focus: ML prototypes, Flask APIs, and React frontends.
+                  </div>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm list-disc pl-5">
+                  <ul className="mt-4 space-y-2 text-sm list-disc pl-5">
+  <li>Designed and trained models for Roman Urdu text classification.</li>
+  <li>Built a Flask web interface with admin dashboard for predictions.</li>
+  <li>Developed WordPress and MERN stack projects as part of academic and freelance work.</li>
+</ul>
+
+                </ul>
+              </div>
+            </Section>
+
+            {/* CONTACT */}
+            <Section id="contact" title="Contact">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <p>Have a question, an opportunity, or just want to say hi? Drop a message!</p>
+                  <div className="flex gap-4 text-sm">
+                    <a className="underline" href="mailto:you@example.com">Email</a>
+                    <a className="underline" href="#" target="_blank">LinkedIn</a>
+                    <a className="underline" href="#" target="_blank">GitHub</a>
+                  </div>
+                </div>
+                <form className="space-y-3" onSubmit={(e) => { e.preventDefault(); alert('Thanks! I will get back to you.'); }}>
+                  <input required placeholder="Your name" className="w-full border rounded-xl px-3 py-2"/>
+                  <input required type="email" placeholder="Your email" className="w-full border rounded-xl px-3 py-2"/>
+                  <textarea required placeholder="Your message" rows="4" className="w-full border rounded-xl px-3 py-2"></textarea>
+                  <button type="submit" className="px-4 py-2 rounded-xl bg-blue-600 text-white">Send</button>
+                </form>
+              </div>
+            </Section>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+
+      // mobile menu
+      const btn = document.getElementById('menuBtn');
+      const menu = document.getElementById('mobileMenu');
+      const label = document.getElementById('menuLabel');
+      btn?.addEventListener('click', () => {
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+          menu.classList.remove('hidden');
+          label.textContent = 'Close';
+        } else {
+          menu.classList.add('hidden');
+          label.textContent = 'Menu';
+        }
+      });
+
+      // year
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
